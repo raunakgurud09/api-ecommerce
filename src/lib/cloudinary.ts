@@ -1,27 +1,27 @@
 import cloudinary from 'cloudinary'
+import config from '../configs/index.config'
 
 cloudinary.v2.config({
-  cloud_name: `${process.env.CLOUDINARY_CLOUD_NAME}`,
-  api_key: `${process.env.CLOUDINARY_API_KEY}`,
-  api_secret: `${process.env.CLOUDINARY_API_SECRET}`
+  cloud_name: config.cloud_name,
+  api_key: config.api_key,
+  api_secret: config.api_secret
 })
 
 export const Cloudinary = {
   upload: async (
-    image: string,
+    image: Express.Multer.File,
     folder: string,
     { width, height }: { width: number; height: number | string }
   ) => {
     try {
-      const res = await cloudinary.v2.uploader.upload(image, {
-        folder: `ecommerce-dress-shop/${folder}`,
-        transformation: { width, height, crop: 'fill' },
-        overwrite: true,
-        invalidate: true
+      const res = await cloudinary.v2.uploader.upload(image.path, {
+        public_id: `ecommerce-dress-shop/${folder}`,
+        transformation: [{ width, height, crop: 'fill' }],
+        overwrite: true
       })
       return res.secure_url
     } catch (error) {
-      return error?.message
+      return
     }
   }
 }

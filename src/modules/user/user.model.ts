@@ -7,6 +7,7 @@ export interface UserDocument extends Document {
   name: string
   password: string
   role: string
+  image: string
   isVerified: boolean
   verificationToken?: string
   createdAt: Date
@@ -22,6 +23,10 @@ const UserSchema = new Schema({
     type: String,
     default: 'user',
     enum: ['admin', 'user']
+  },
+  image: {
+    type: String,
+    default: ''
   },
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String }

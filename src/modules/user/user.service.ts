@@ -1,35 +1,32 @@
-import { DocumentDefinition, FilterQuery } from 'mongoose';
-import User, { UserDocument } from './user.model';
-import { omit } from 'lodash';
+import { Cloudinary } from '../../lib/cloudinary'
+import Users from './user.provider'
 
-export async function createUser(input: DocumentDefinition<UserDocument>) {
-  try {
-    return await User.create(input);
-  } catch (error) {
-    console.log(error);
-    // throw new Error(error)
-  }
+const profile = async (user: any) => {
+  const { userId } = user
+  const foundUser = await Users.findUserById(userId)
+  if (!foundUser) return { message: 'User not found' }
+  return foundUser
 }
 
-export async function findUser(query: FilterQuery<UserDocument>) {
-  return User.findOne(query).lean();
+const uploadAvatar = async (
+  user: any,
+  image: Express.Multer.File | undefined
+) => {
+  if (!image) return { message: 'File not uploaded properly' }
+
+  const imageUrl = await Cloudinary.upload(image, 'avatar', {
+    height: 600,
+    width: 600
+  })
+  if (!imageUrl) return { message: 'Avatar not uploaded' }
+
+  const { userId } = user
+  const result = await Users.changeUserImage(userId, imageUrl)
+
+  return result
 }
 
-export async function validatePassword({
-  email,
-  password
-}: {
-  email: UserDocument['email'];
-  password: string;
-}) {
-  const user = await User.findOne({ email });
-  if (!user) {
-    return false;
-  }
-
-  const isValid = await user.comparePassword(password);
-  if (!isValid) {
-    return false;
-  }
-  return omit(user.toJSON(), 'password');
+export default {
+  profile,
+  uploadAvatar
 }

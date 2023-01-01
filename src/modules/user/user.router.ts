@@ -1,7 +1,15 @@
 import express from 'express'
 const Router = express.Router()
 
-import { createUserHandle, getAuthorizedUser } from './user.controller'
+import multer from 'multer'
+const storage = multer.diskStorage({})
+
+import {
+  getAuthorizedUser,
+  getUserProfileHandler,
+  uploadAvatarHandler,
+  verifyUserHandler
+} from './user.controller'
 
 // import { createUserSchema, createUserSessionSchema } from '../auth/user.schema'
 
@@ -16,21 +24,26 @@ import { createUserHandle, getAuthorizedUser } from './user.controller'
 import requiresUser from '../../middleware/requiresUser.middleware'
 import authorizePermissions from '../../middleware/auth.middleware'
 
-//Register user
-// Router.post('/user', validateRequest(createUserSchema), createUserHandle)
+const fileFilter = (req: any, file: any, cb: any) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true)
+  } else {
+    cb('invalid image file!', false)
+  }
+}
+const uploads = multer({ storage, fileFilter })
 
-//Login user
-// Router.post(
-//   '/sessions',
-//   validateRequest(createUserSessionSchema),
-//   createUserSessionHandler
-// )
 
-// Get all session of a user
-// Router.get('/sessions', requiresUser, getUserSessionsHandler)
+Router.route('/profile').get(requiresUser, getUserProfileHandler)
 
-//Logout
-// Router.delete('/sessions', requiresUser, invalidateUserSessionHandler)
+Router.post(
+  '/upload-avatar',
+  requiresUser,
+  uploads.single('image'),
+  uploadAvatarHandler
+)
+
+Router.post('/verify-email',requiresUser,verifyUserHandler)
 
 //authorize user only path
 Router.get(
@@ -40,6 +53,5 @@ Router.get(
   getAuthorizedUser
 )
 
-//get all available shows
 
 export { Router as userRouter }

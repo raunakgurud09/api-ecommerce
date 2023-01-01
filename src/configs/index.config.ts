@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
 export default {
   port: process.env.PORT || 5000,
@@ -23,5 +23,8 @@ export default {
   tlo7iXY/T/FtY6oHVNof/+hfSxMZpNOjWGHGKjd7gG0xCWZbPSYVW7LlCanP+URs
   +0fk592vlHggCWYQ6QJANZzno1FwUOjtGLeKm83ZGdbo3K+00i25FmBgB2d0uAtk
   noxFVOjsY+eSXHZqNybrhWRAzutSnpz/QEf/7Vg97g==
-  -----END CERTIFICATE-----`
-};
+  -----END CERTIFICATE-----`,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+}
