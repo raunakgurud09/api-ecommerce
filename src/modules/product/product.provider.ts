@@ -1,18 +1,20 @@
 import { Product, ProductDocument } from './Product.model'
 
-const create = (input: ProductDocument, imageUrl: string) => {
-  console.log('create')
+const create = async (
+  { name, description, category, price }: ProductDocument,
+  imageUrl: string
+) => {
   try {
-    const product = Product.create({
+    const product = await Product.create({
       name,
       description,
       imageUrl,
       category,
       price
     })
-    return product
+    return { data: product }
   } catch (error) {
-    return error?.message
+    return { message: 'Product not created' }
   }
 }
 

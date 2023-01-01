@@ -2,23 +2,26 @@ import { Cloudinary } from '../../lib/cloudinary'
 import { ProductDocument } from './Product.model'
 import Product from './product.provider'
 
-export async function createProduct(input: ProductDocument) {
+export const createProduct = async (
+  input: ProductDocument,
+  image?: Express.Multer.File | undefined
+) => {
   try {
     // send Image to cloudinary
-    const imageUrl: string = await Cloudinary.upload(
-      input.imageUrl,
-      'Product',
-      { width: 600, height: 600 }
-    )
+    if (!image) return { message: 'File not uploaded properly' }
 
-    if (!imageUrl) {
-      return { message: "Couldn't upload to cloudinary" }
-    }
+    const imageUrl = await Cloudinary.upload(image, 'Products', {
+      height: 600,
+      width: 600
+    })
+    if (!imageUrl) return { message: 'Product not uploaded' }
 
-    const product = Product.create(input, imageUrl)
+    const { data, message } = await Product.create(input, imageUrl)
 
-    return { data: product, message: 'product successfully created' }
+    return { data, message }
   } catch (error) {
     console.log(error)
   }
 }
+
+export default {}

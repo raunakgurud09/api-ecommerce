@@ -1,14 +1,34 @@
-import { Router } from 'express';
+import express from 'express'
 import {
   createProductHandler,
-  getProductHandler
-} from './product.controller';
-import authorizePermissions from '../../middleware/auth.middleware';
-import requiresUser from '../../middleware/requiresUser.middleware';
+  deleteProductHandler,
+  getProductHandler,
+  getSingleProductHandler,
+  updateProductHandler
+} from './product.controller'
+import authorizePermissions from '../../middleware/auth.middleware'
+import requiresUser from '../../middleware/requiresUser.middleware'
+import { uploads } from '../user/user.router'
 
-const router = Router();
+const Router = express.Router()
 
-router
-  .route('/')
-  .get(requiresUser, authorizePermissions('admin'), getProductHandler)
-  .post(requiresUser, authorizePermissions('admin'), createProductHandler);
+Router.route('/')
+  .get( getProductHandler)
+  .post(
+    requiresUser,
+    authorizePermissions('admin'),
+    uploads.single('image'),
+    createProductHandler
+  )
+
+Router.route('/:productId')
+  .get( getSingleProductHandler)
+  .patch(
+    requiresUser,
+    authorizePermissions('admin'),
+    uploads.single('image'),
+    updateProductHandler
+  )
+  .delete(requiresUser, authorizePermissions('admin'), deleteProductHandler)
+
+export { Router as productRouter }

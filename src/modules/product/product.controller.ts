@@ -1,32 +1,51 @@
 import { Request, Response } from 'express'
-import { ProductDocument } from './Product.model'
+import { get } from 'lodash'
+import { Product, ProductDocument } from './Product.model'
 import { createProduct } from './product.service'
 
 export const getProductHandler = async (req: Request, res: Response) => {
-  // Refine input values here
-  const { id } = req.body
+  //find product by id
+  const products = await Product.find({})
 
-  // Contact business layer
-
-  // Handle response
-  res.status(200).json({ data: {}, message: {} })
+  res.status(200).json({ products })
 }
 
 export const createProductHandler = async (req: Request, res: Response) => {
-  const { name, price, description, imageUrl, category } = req.body
-  //Validation
+  const { name, price, description, category } = req.body
+  const image = get(req, 'file')
+
   const input = {
     name,
     price,
     description,
-    imageUrl,
     category
   } as ProductDocument
 
-  const result = await createProduct(input)
+  const result = await createProduct(input, image)
 
-  // Handle response
-  res
-    .status(200)
-    .json({ data: { result }, message: 'Successfully product created' })
+  res.status(200).json(result)
+}
+
+export const getSingleProductHandler = async (req: Request, res: Response) => {
+  const { productId } = req.params
+  //find product by id
+  const product = await Product.findById(productId)
+
+  res.status(200).json({ product })
+}
+
+export const updateProductHandler = async (req: Request, res: Response) => {
+  const { productId } = req.params
+  //find product by id
+  const product = await Product.findById(productId)
+
+  res.status(200).json(product)
+}
+
+export const deleteProductHandler = async (req: Request, res: Response) => {
+  const { productId } = req.params
+  //find product by id
+  const product = await Product.findById(productId)
+
+  res.status(200).json(product)
 }
