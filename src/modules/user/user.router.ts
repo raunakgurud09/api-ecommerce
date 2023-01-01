@@ -31,7 +31,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb('invalid image file!', false)
   }
 }
-const uploads = multer({ storage, fileFilter })
+export const uploads = multer({ storage, fileFilter })
 
 
 Router.route('/profile').get(requiresUser, getUserProfileHandler)

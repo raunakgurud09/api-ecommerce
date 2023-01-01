@@ -1,11 +1,13 @@
 import { Cloudinary } from '../../lib/cloudinary'
 import Users from './user.provider'
 
+//This user is an token user
+
 const profile = async (user: any) => {
   const { userId } = user
   const foundUser = await Users.findUserById(userId)
   if (!foundUser) return { message: 'User not found' }
-  return foundUser
+  return { foundUser, message: 'User found' }
 }
 
 const uploadAvatar = async (

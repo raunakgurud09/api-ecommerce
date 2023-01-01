@@ -16,9 +16,9 @@ export async function uploadAvatarHandler(req: Request, res: Response) {
 
 export async function getUserProfileHandler(req: Request, res: Response) {
   const user = get(req, 'user')
-  const result = await Users.profile(user)
+  const { foundUser, message } = await Users.profile(user)
 
-  res.status(200).json(result)
+  res.status(200).json({ user: foundUser, message })
 }
 
 export async function getAuthorizedUser(req: Request, res: Response) {
