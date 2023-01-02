@@ -17,18 +17,10 @@
       "pre-commit": "npm run prettier-format && npm run lint"
     }
   },
-  "keywords": [
-    "booking-api",
-    "mongoDB",
-    "typescript",
-    "Theater-booking",
-    "express"
-  ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/multer": "^1.4.7",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "cloudinary": "^1.33.0",
@@ -48,6 +40,8 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/multer": "^1.4.7",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
