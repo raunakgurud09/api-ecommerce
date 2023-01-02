@@ -25,6 +25,7 @@ import { userRouter } from './modules/user/user.router'
 import { adminRouter } from './modules/admin/admin.router'
 import { productRouter } from './modules/product/product.router'
 import { cartRouter } from './modules/cart/cart.router'
+import { wishlistRouter } from './modules/wishlist/wishlist.route'
 
 app.get('/', (req, res) => res.send('working'))
 app.use('/api/v1/auth', authRouter)
@@ -32,6 +33,7 @@ app.use('/api/v1/user', userRouter)
 app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/products', productRouter)
 app.use('/api/v1/cart', cartRouter)
+app.use('/api/v1/wishlist', wishlistRouter)
 
 const PORT = config.port as number
 
