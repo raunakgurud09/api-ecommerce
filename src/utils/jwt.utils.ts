@@ -6,7 +6,6 @@ const key = config.privateKey
 export async function createTokenUser(user: any) {
   return {
     name: user.name,
-    email: user.email,
     userId: user._id,
     role: user.role
   }
