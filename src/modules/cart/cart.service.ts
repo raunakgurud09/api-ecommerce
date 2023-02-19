@@ -6,7 +6,7 @@ const { ObjectId } = mongoose.Types
 export const getCart = async (user: any) => {
   try {
     const { userId } = user
-    const cart = await Cart.findOne(userId)
+    const cart = await Cart.findAndPopulate(userId)
     return { data: cart }
   } catch (error) {
     return { message: 'No cart found for this user' }

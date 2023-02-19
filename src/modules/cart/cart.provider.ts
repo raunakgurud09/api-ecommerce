@@ -1,7 +1,13 @@
+import { Product } from '../product/Product.model'
 import { Cart } from './cart.model'
 
 export const findCartByUserId = async (userId: string) => {
   return await Cart.findOne({ user: userId })
+}
+
+export const findAndPopulate = async (userId: string) => {
+  const cart = await Cart.findOne({ user: userId }).populate('items.product')
+  return cart
 }
 
 export const updateExistingCart = async (
@@ -32,5 +38,6 @@ export default {
   findCartByUserId,
   updateExistingCart,
   create,
-  findOne
+  findOne,
+  findAndPopulate
 }
