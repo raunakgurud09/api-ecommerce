@@ -1,11 +1,12 @@
+import { Wishlist } from './wishlist.model'
 import wishlistProvider from './wishlist.provider'
 
 export const getWishlist = async (user: any) => {
   const { userId } = user
-  const wishlist = wishlistProvider.findById(userId)
+  // const wishlist = await wishlistProvider.findById(userId)
+  const wishlist = await Wishlist.findOne({ user: userId })
 
   if (!wishlist) return { message: 'Wishlist is Empty' }
-
   return { data: wishlist }
 }
 
