@@ -31,7 +31,14 @@ export const getSingleProductHandler = async (req: Request, res: Response) => {
   //find product by id
   const product = await Product.findById(productId)
 
-  res.status(200).json({ product })
+  if (!product) return { message: 'Product not found' }
+
+  const relatedProducts = await Product.find({
+    category: product.category,
+    _id: { $ne: product._id }
+  }).limit(8)
+
+  res.status(200).json({ product, relatedProducts })
 }
 
 export const updateProductHandler = async (req: Request, res: Response) => {
@@ -45,7 +52,7 @@ export const updateProductHandler = async (req: Request, res: Response) => {
 export const deleteProductHandler = async (req: Request, res: Response) => {
   const { productId } = req.params
   //find product by id
-  const product = await Product.findById(productId)
+  const product = await Product.findByIdAndDelete(productId)
 
   res.status(200).json(product)
 }
