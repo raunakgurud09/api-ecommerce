@@ -13,7 +13,6 @@ export const getProductHandler = async (req: Request, res: Response) => {
 export const createProductHandler = async (req: Request, res: Response) => {
   const { name, price, description, category,image } = req.body
   // const image = get(req, 'file')
-  // const image = get(req, 'file')
 
   const input = {
     name,

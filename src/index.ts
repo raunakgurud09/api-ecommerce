@@ -29,6 +29,9 @@ import { wishlistRouter } from './modules/wishlist/wishlist.route'
 import { orderRouter } from './modules/orders/order.router'
 
 app.get('/', (req, res) => res.send('working'))
+app.get('/api/v1', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'API working' })
+})
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/admin', adminRouter)
