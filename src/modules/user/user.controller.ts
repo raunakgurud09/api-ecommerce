@@ -3,10 +3,10 @@ import { get } from 'lodash'
 import Users from './user.service'
 // import { createUser } from './user.service'
 
-export async function uploadAvatarHandler(req: Request, res: Response) {
+export async function uploadAvatarHandler(req: any, res: Response) {
   // const image = req.file
+  const { image } = req.body.files
 
-  const image = get(req, 'file')
   const user = get(req, 'user')
 
   const result = await Users.uploadAvatar(user, image)

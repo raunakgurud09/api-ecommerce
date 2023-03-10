@@ -12,11 +12,12 @@ const profile = async (user: any) => {
 
 const uploadAvatar = async (
   user: any,
-  image: Express.Multer.File | undefined
+  // image: Express.Multer.File | undefined
+  image: string
 ) => {
   if (!image) return { message: 'File not uploaded properly' }
 
-  const imageUrl = await Cloudinary.upload(image, 'avatar', {
+  const imageUrl = await Cloudinary.upload(image, `avatar/${user.userId}`, {
     height: 600,
     width: 600
   })

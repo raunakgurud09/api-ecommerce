@@ -4,7 +4,7 @@ import Product from './product.provider'
 
 export const createProduct = async (
   input: ProductDocument,
-  image?: Express.Multer.File | undefined
+  image?: string
 ) => {
   try {
     // send Image to cloudinary
