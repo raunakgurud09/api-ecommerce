@@ -8,6 +8,23 @@ cloudinary.v2.config({
 })
 
 export const Cloudinary = {
+  uploadFile: async (
+    image: Express.Multer.File,
+    folder: string,
+    { width, height }: { width: number; height: number | string }
+  ) => {
+    try {
+      const res = await cloudinary.v2.uploader.upload(image.path, {
+        public_id: `ecommerce-dress-shop/${folder}`,
+        transformation: [{ width, height, crop: 'fill' }],
+        overwrite: true,
+        invalidate: true
+      })
+      return res.secure_url
+    } catch (error) {
+      return
+    }
+  },
   upload: async (
     image: string,
     folder: string,
