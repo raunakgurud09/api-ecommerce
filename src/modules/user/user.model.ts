@@ -8,6 +8,7 @@ export interface UserDocument extends Document {
   password: string
   role: string
   image: string
+  googleId: string
   isVerified: boolean
   verificationToken?: string
   createdAt: Date
@@ -28,6 +29,7 @@ const UserSchema = new Schema({
     type: String,
     default: ''
   },
+  googleId: String,
   isVerified: { type: Boolean, default: false },
   verificationToken: { type: String }
 })

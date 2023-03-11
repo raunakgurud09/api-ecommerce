@@ -5,13 +5,15 @@ const Router = express.Router()
 import {
   register,
   login,
-  logout
+  logout,
+  loginViaGoogle
   // verifyEmail,
   // loginViaGoogle
 } from './auth.controller'
 
 Router.route('/register').post(register)
 Router.route('/login').post(login)
+Router.route('/google').post(loginViaGoogle)
 Router.route('/logout').delete(logout)
 // Router.route('/google').post(loginViaGoogle)
 

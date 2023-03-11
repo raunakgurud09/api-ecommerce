@@ -3,6 +3,7 @@ import { createUserSchema } from './user.schema'
 import Auth from './auth.service'
 import validateRequest from '../../middleware/validate.middleware'
 import { attachCookiesToResponse } from '../../utils/attachCookiesToResponse'
+import { Google } from '../../lib/google'
 
 export const register = async (req: Request, res: Response) => {
   validateRequest(createUserSchema) // Not working
@@ -40,21 +41,26 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'user logged out!' })
 }
 
-// const loginViaGoogle = async (req, res) => {
-//   const { idToken } = req.body
-//   if (!idToken) {
-//     return res.status(402).json({ error: { message: 'id Token is required' } })
-//   }
-//   try {
-//     const response = await Google.verifyIdToken(idToken)
-//   } catch (error) {}
-// }
+export const loginViaGoogle = async (req:Request, res:Response) => {
+  console.log("called")
+  const { idToken } = req.body
+  if (!idToken) {
+    return res.status(402).json({ error: { message: 'id Token is required' } })
+  }
+  try {
+    const response = await Google.verifyIdToken(idToken)
+    console.log(response)
+    return res.status(200)
+  } catch (error) {
+    return res.status(400)
+  }
+}
 
 module.exports = {
   register,
   login,
-  logout
-  // loginViaGoogle,
+  logout,
+  loginViaGoogle
   // sendOTP,
   // checkVerificationEmail
 }
