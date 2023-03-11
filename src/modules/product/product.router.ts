@@ -9,11 +9,28 @@ import {
 import authorizePermissions from '../../middleware/auth.middleware'
 import requiresUser from '../../middleware/requiresUser.middleware'
 import { uploads } from '../user/user.router'
+import { BannerHandler, createBanner } from './banner.controller'
+import { categoryHandler, createCategory } from './category.controller'
 
 const Router = express.Router()
 
+Router.route('/categories').get(categoryHandler)
+Router.route('/categories').post(
+  requiresUser,
+  authorizePermissions('admin'),
+  uploads.single('image'),
+  createCategory
+)
+Router.route('/banners').get(BannerHandler)
+Router.route('/banners').post(
+  requiresUser,
+  authorizePermissions('admin'),
+  uploads.single('image'),
+  createBanner
+)
+
 Router.route('/')
-  .get( getProductHandler)
+  .get(getProductHandler)
   .post(
     requiresUser,
     authorizePermissions('admin'),
@@ -22,7 +39,7 @@ Router.route('/')
   )
 
 Router.route('/:productId')
-  .get( getSingleProductHandler)
+  .get(getSingleProductHandler)
   .patch(
     requiresUser,
     authorizePermissions('admin'),
