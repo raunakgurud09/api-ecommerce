@@ -5,10 +5,8 @@ import deserializeUser from './middleware/deserializeUser.middleware'
 import config from './configs/index.config'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-import cors from 'cors'
 
 const app = express()
-app.use(cors({ origin: '*' }))
 app.use(cookieParser())
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(deserializeUser)

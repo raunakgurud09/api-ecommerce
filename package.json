@@ -2,7 +2,7 @@
   "name": "api-ecommerce",
   "version": "0.1.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --config nodemon.js src/index.ts",
