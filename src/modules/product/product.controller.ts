@@ -13,7 +13,12 @@ export const getProductHandler = async (req: Request, res: Response) => {
 export const createProductHandler = async (req: Request, res: Response) => {
   const { name, price, description, category,image } = req.body
   // const image = get(req, 'file')
-
+  console.log(req.body)
+  if (!name && !description && !price && !category) {
+    return res
+      .status(400)
+      .json({ message: 'name, description, category and price are required' })
+  }
   const input = {
     name,
     price,
@@ -21,6 +26,7 @@ export const createProductHandler = async (req: Request, res: Response) => {
     category
   } as ProductDocument
 
+  if (!image) return res.status(400).json({message:"Image is required"})
   const result = await createProduct(input, image)
 
   res.status(200).json(result)

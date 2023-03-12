@@ -13,9 +13,10 @@ export const BannerHandler = async (req: Request, res: Response) => {
 }
 
 export const createBanner = async (req: Request, res: Response) => {
-  const { name, description } = req.body
-  //   const { image } = req.body.files
-  const image = get(req, 'file')
+  const { name, description,image } = req.body
+    // const { image } = req.body.files
+  // const image = get(req, 'file')
+  // console.log(name,description,image)
 
   if (!name && !description) {
     return res
@@ -25,7 +26,7 @@ export const createBanner = async (req: Request, res: Response) => {
   try {
     if (!image) return res.status(400).json({message:"Image is required"})
 
-    const imageURL = await Cloudinary.uploadFile(image, `banner/${name}`, {
+    const imageURL = await Cloudinary.upload(image, `banner/${name}`, {
       height: 400,
       width: 720
     })
@@ -38,7 +39,7 @@ export const createBanner = async (req: Request, res: Response) => {
       description,
       imageURL
     })
-
+    console.log(banner)
     res.status(201).json({ banner, message: 'Created Banner' })
   } catch (error) {
     res.status(500).json({ message: 'Error in creating banners' })
