@@ -1,13 +1,15 @@
 // "use strict";
 import express from 'express'
-import connectDB from './utils/connectDB'
 import deserializeUser from './middleware/deserializeUser.middleware'
 import config from './configs/index.config'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
+import cors from 'cors'
 
 const app = express()
 app.use(cookieParser())
+app.use(cors({ origin: '*' }))
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(deserializeUser)
 
@@ -16,6 +18,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 // Database
+const connectDB = async () => {
+  const dbUriCloud = config.dbUriCloud as string
+  try {
+    const conn = await mongoose.connect(dbUriCloud)
+    console.log(`MongoDB Connected: ${conn.connection.host}`)
+  } catch (error) {
+    console.log(error)
+    process.exit(1)
+  }
+}
 
 // Routes
 import { authRouter } from './modules/auth/router'
@@ -40,7 +52,8 @@ app.use('/api/v1/order', orderRouter)
 
 const PORT = config.port as number
 
-app.listen(PORT, async () => {
-  await connectDB()
-  console.log(`server is running on ${PORT}...`)
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`listening for requests on port ${PORT}`)
+  })
 })
