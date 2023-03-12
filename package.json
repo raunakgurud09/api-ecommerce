@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "npx prettier --config .prettierrc \"src/**/*.ts\" --write",
-    "build": "rimraf ./build && tsc",
+    "build": "rmdir ./build && tsc",
     "start": "npm run build && node build/index.js"
   },
   "husky": {
