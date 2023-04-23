@@ -28,7 +28,7 @@ export const createBanner = async (req: Request, res: Response) => {
 
     const imageURL = await Cloudinary.upload(image, `banner/${name}`, {
       height: 400,
-      width: 720
+      width: 1500
     })
 
     if (!imageURL)

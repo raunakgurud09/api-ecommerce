@@ -26,11 +26,10 @@ export const login = async (req: Request, res: Response) => {
 
   const { accessToken, message } = await Auth.login({ email, password })
 
-  if (!accessToken) return res.status(400).json(message)
+  if (!accessToken) return res.status(400).json({  message })
   attachCookiesToResponse(res, 'x-access-token', accessToken)
 
   res.status(200).json({ token: accessToken, message })
-  // console.log(res.header)
 }
 
 export const logout = async (req: Request, res: Response) => {
@@ -41,8 +40,8 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ msg: 'user logged out!' })
 }
 
-export const loginViaGoogle = async (req:Request, res:Response) => {
-  console.log("called")
+export const loginViaGoogle = async (req: Request, res: Response) => {
+  console.log('called')
   const { idToken } = req.body
   if (!idToken) {
     return res.status(402).json({ error: { message: 'id Token is required' } })

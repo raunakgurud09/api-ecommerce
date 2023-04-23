@@ -4,12 +4,12 @@ import Product from './product.provider'
 
 export const createProduct = async (
   input: ProductDocument,
-  image: string
+  image: any
 ) => {
   try {
     // send Image to cloudinary
 
-    const imageUrl = await Cloudinary.upload(image, `products/${input.name}`, {
+    const imageUrl = await Cloudinary.uploadFile(image, `products/${input.name}`, {
       height: 600,
       width: 600
     })

@@ -1,19 +1,33 @@
 import { Request, Response } from 'express'
+import { STATUS_CODES } from 'http'
 import { get } from 'lodash'
+import APIFeatures from '../../utils/ApiFeatures'
 import { Product, ProductDocument } from './Product.model'
 import { createProduct } from './product.service'
 
 export const getProductHandler = async (req: Request, res: Response) => {
   //find product by id
-  const products = await Product.find({})
+  try {
+    const features = new APIFeatures(Product.find(), Product, req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate()
 
-  res.status(200).json({ products })
+    const products = await features.query
+
+    const total = await features.count().total
+
+    res.status(200).json({ products, data: { total, count: products.length } })
+  } catch (error) {
+    res.status(500).json({ message: 'Error in getting products' })
+  }
 }
 
 export const createProductHandler = async (req: Request, res: Response) => {
-  const { name, price, description, category,image } = req.body
-  // const image = get(req, 'file')
-  console.log(req.body)
+  const { name, price, description, category } = req.body
+  const image = get(req, 'file')
+  
   if (!name && !description && !price && !category) {
     return res
       .status(400)
@@ -26,7 +40,7 @@ export const createProductHandler = async (req: Request, res: Response) => {
     category
   } as ProductDocument
 
-  if (!image) return res.status(400).json({message:"Image is required"})
+  if (!image) return res.status(400).json({ message: 'Image is required' })
   const result = await createProduct(input, image)
 
   res.status(200).json(result)
@@ -58,7 +72,12 @@ export const updateProductHandler = async (req: Request, res: Response) => {
 export const deleteProductHandler = async (req: Request, res: Response) => {
   const { productId } = req.params
   //find product by id
-  const product = await Product.findByIdAndDelete(productId)
-
-  res.status(200).json(product)
+  try {
+    const product = await Product.findByIdAndDelete(productId)
+    if (!product)
+      return res.status(401).json({ message: "product don't exist" })
+    res.status(200).json(product)
+  } catch (error) {
+    res.status(400).json({ message: 'ERR' })
+  }
 }
